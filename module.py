@@ -17,6 +17,7 @@
 
 """ Module """
 from pathlib import Path
+from queue import Empty
 
 import flask  # pylint: disable=E0401
 import jinja2  # pylint: disable=E0401
@@ -24,7 +25,7 @@ from flask import request, render_template, redirect, url_for
 from pylon.core.tools import log  # pylint: disable=E0611,E0401
 from pylon.core.tools import module  # pylint: disable=E0611,E0401
 
-from .components.render_qualys import render_qualys_card
+from .components.render_qualys import render_qualys_card, render_qualys_integration_create_modal
 
 
 class Module(module.ModuleModel):
@@ -37,7 +38,7 @@ class Module(module.ModuleModel):
 
     def init(self):
         """ Init module """
-        log.info("Initializing module")
+        log.info("Initializing module security_scanner_qualys")
         bp = flask.Blueprint(
             "qualys", "plugins.security_scanner_qualys.plugin",
             static_folder=str(Path(__file__).parents[0] / "static"),
@@ -50,10 +51,16 @@ class Module(module.ModuleModel):
         self.context.app.register_blueprint(bp)
         # Register template slot callback
         self.context.slot_manager.register_callback("security_scanners", render_qualys_card)
+        self.context.slot_manager.register_callback("integrations", render_qualys_integration_create_modal)
 
         from .rpc_worker import get_scanner_parameters
         self.context.rpc_manager.register_function(get_scanner_parameters, name='qualys')
 
+        try:
+            self.context.rpc_manager.timeout(5).integrations_register('qualys')
+        except Empty:
+            ...
+
     def deinit(self):  # pylint: disable=R0201
         """ De-init module """
-        log.info("De-initializing module")
+        log.info("De-initializing module security_scanner_qualys")

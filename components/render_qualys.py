@@ -7,3 +7,10 @@ def render_qualys_card(context, slot, payload):
         f"qualys_template.html",
         config=payload
     )
+
+
+def render_qualys_integration_create_modal(context, slot, payload):
+    return render_template(
+        'integration_create.html',
+        config=payload
+    )
