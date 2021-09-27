@@ -1,5 +1,5 @@
 <!--<button type="button" class="btn btn-24 btn-secondary" data-toggle="modal" data-target="#qualys_integration"><i class="fas fa-plus"></i></button>-->
-<button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#qualys_integration">
+<button type="button" class="btn btn-secondary btn-lg col-2 card-x" data-toggle="modal" data-target="#qualys_integration" id="create_integration_qualys">
     <div class="row">
         <div class="col-2"><i class="fa fa-plus"></i></div>
         <div class="col-3"><img style="height: 20px" src="{{ url_for('qualys.static', filename='logo.svg') }}"></img></div>
@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-xs">
                         <button type="button" id="qualys_close" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
-                        <button type="button" id="qualys_submit" class="btn btn-sm btn-secondary ">Save</button>
+                        <button type="button" id="qualys_submit" class="btn btn-sm btn-secondary">Save</button>
                     </div>
                 </div>
             </div>

@@ -15,3 +15,12 @@ def render_qualys_integration_create_modal(context, slot, payload):
         'qualys_integration.html',
         config=payload
     )
+
+def render_qualys_integration_card(context, slot, payload):
+    print('99'*88)
+    print(payload)
+    print('99'*88)
+    return render_template(
+        'integration_card.html',
+        config=payload
+    )

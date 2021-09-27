@@ -15,6 +15,8 @@ const qualysSubmit = data => {
         if (response.ok) {
             $('#qualys_submit').removeClass('disabled')
             $('#qualys_test_connection').removeClass('btn-warning').addClass('btn-success').removeClass('btn-secondary')
+            data.save_action === true && $('#qualys_integration').modal('hide')
+            data.save_action === true && location.reload()
         } else {
             $('#qualys_test_connection').removeClass('btn-success').removeClass('btn-secondary').addClass('btn-warning')
             response.json().then(errorData => {
@@ -67,11 +69,34 @@ const clearForm = () => {
     $('#qualys_submit').removeClass('updating')
 }
 
+
+const qualysUpdate = () => {
+    console.log('UPDATE')
+}
+
+const editIntegration = data => {
+    console.log('editIntegration', data)
+    const {settings: {url, login}} = data;
+    $('#qualys_url').val(url)
+    $('#qualys_login').val(login)
+    $('#qualys_integration').modal('show')
+    $('#qualys_submit').on('click', qualysUpdate)
+}
+
+
 $(document).ready(function () {
-    $('#qualys_submit').on('click', qualysCreate);
+    $('#create_integration_qualys').on('click', () => $('#qualys_submit').on('click', qualysCreate));
     $('#qualys_test_connection').on('click', qualysTestConnection);
     $('#qualys_url').on('change', () => $('#qualys_submit').addClass('disabled'))
     $('#qualys_login').on('change', () => $('#qualys_submit').addClass('disabled'))
     $('#qualys_password').on('change', () => $('#qualys_submit').addClass('disabled'))
-    $('#qualys_close').on('click', () => {clearErrors(); clearForm()})
+    // $('#qualys_close').on('click', () => {clearErrors(); clearForm()})
+    $('#qualys_integration').on('show.bs.modal', e => {
+        $('#qualys_submit').addClass('disabled')
+    })
+    $('#qualys_integration').on('hidden.bs.modal', e => {
+      clearErrors();
+      clearForm();
+      $('#qualys_submit').prop("onclick", null).off("click");
+    })
 });
