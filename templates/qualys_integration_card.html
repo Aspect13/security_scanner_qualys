@@ -1,0 +1,22 @@
+<div class="card col-2 card-row-1 mr-1 ml-1" onclick="editIntegration({{ config.json() }})">
+    <!--    <div class="card-header">-->
+    <!--        {{ config['name'] }}-->
+    <!--    </div>-->
+    <!--    <div class="card-body">-->
+    <!--        {{ config['id'] }}-->
+    <!--    </div>-->
+    <div class="row" style="height: 75px;">
+        <div class="col-5" style="text-align: center; padding: 5px; align-self: center;">
+            <img style="height: 55px" src="{{ url_for('qualys.static', filename='logo.svg') }}"></img>
+        </div>
+        <div class="col">
+            <div class="row" style="text-transform: uppercase">
+                <h13>{{ config['name'] }}</h13>
+            </div>
+            <div class="row card-header">
+                {{ config['id'] }}
+            </div>
+        </div>
+    </div>
+
+</div>
