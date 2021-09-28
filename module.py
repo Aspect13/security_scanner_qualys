@@ -26,7 +26,7 @@ from pylon.core.tools import log  # pylint: disable=E0611,E0401
 from pylon.core.tools import module  # pylint: disable=E0611,E0401
 
 from .components.render_qualys import render_qualys_card, render_qualys_integration_create_modal, \
-    render_qualys_integration_card
+    render_qualys_integration_card, render_qualys_reporter_toggle
 from .models.integration_pd import IntegrationModel
 
 
@@ -54,6 +54,7 @@ class Module(module.ModuleModel):
         # Register template slot callback
         self.context.slot_manager.register_callback("security_scanners", render_qualys_card)
         self.context.slot_manager.register_callback("integration_card_qualys", render_qualys_integration_card)
+        self.context.slot_manager.register_callback("security_reporters", render_qualys_reporter_toggle)
 
         from .rpc_worker import get_scanner_parameters
         self.context.rpc_manager.register_function(get_scanner_parameters, name='qualys')
