@@ -1,34 +1,46 @@
 const apiPath = '/api/v1/integrations/qualys/'
 
-const qualysSubmit = data => {
+const preFetch = () => {
     clearErrors()
     $('#qualys_test_connection').addClass('updating')
     $('#qualys_submit').addClass('updating')
+}
+
+const postFetch = () => {
+    $('#qualys_test_connection').removeClass('updating')
+    $('#qualys_submit').removeClass('updating')
+}
+
+const handleError = response => {
+    $('#qualys_test_connection').removeClass('btn-success').removeClass('btn-secondary').addClass('btn-warning')
+        response.json().then(errorData => {
+            console.log(errorData)
+            errorData.forEach(item => {
+                const errorId = `error_qualys_${item.loc[0]}`
+                console.log(errorId)
+                $(`#qualys_${item.loc[0]}`).addClass('is-invalid')
+                $(`#error_qualys_${item.loc[0]}`).text(item.msg).show()
+            })
+            // errorData[0].loc[0]
+        })
+}
+
+const qualysSubmit = (data) => {
+    preFetch()
     fetch(apiPath, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     }).then(response => {
         console.log(response)
-        $('#qualys_test_connection').removeClass('updating')
-        $('#qualys_submit').removeClass('updating')
+        postFetch()
         if (response.ok) {
             $('#qualys_submit').removeClass('disabled')
             $('#qualys_test_connection').removeClass('btn-warning').addClass('btn-success').removeClass('btn-secondary')
             data.save_action === true && $('#qualys_integration').modal('hide')
             data.save_action === true && location.reload()
         } else {
-            $('#qualys_test_connection').removeClass('btn-success').removeClass('btn-secondary').addClass('btn-warning')
-            response.json().then(errorData => {
-                console.log(errorData)
-                errorData.forEach(item => {
-                    const errorId = `error_qualys_${item.loc[0]}`
-                    console.log(errorId)
-                    $(`#qualys_${item.loc[0]}`).addClass('is-invalid')
-                    $(`#error_qualys_${item.loc[0]}`).text(item.msg).show()
-                })
-                // errorData[0].loc[0]
-            })
+            handleError(response)
         }
     })
 }
@@ -64,14 +76,35 @@ const clearErrors = () => {
 const clearForm = () => {
     $('#qualys_url').val('')
     $('#qualys_login').val('')
-    $('#qualys_password').val('')
+    $('#qualys_password').val('').prop('readonly', false).attr('placeholder', 'Password')
     $('#qualys_test_connection').removeClass('updating')
     $('#qualys_submit').removeClass('updating')
 }
 
 
-const qualysUpdate = () => {
-    console.log('UPDATE')
+const qualysUpdate = (cardData) => {
+    console.log('UPDATE', cardData)
+    const url = $('#qualys_url').val()
+    const login = $('#qualys_login').val()
+    const password = $('#qualys_password').prop('readonly') ? null :$('#qualys_password').val()
+    // qualysSubmit({url, login, password, project_id: getSelectedProjectId(), save_action: true})
+    preFetch()
+    fetch(apiPath + cardData.id, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({url, login, password})
+    }).then(response => {
+        console.log(response)
+        postFetch()
+        if (response.ok) {
+            $('#qualys_submit').removeClass('disabled')
+            $('#qualys_test_connection').removeClass('btn-warning').addClass('btn-success').removeClass('btn-secondary')
+            $('#qualys_integration').modal('hide')
+            location.reload()
+        } else {
+            handleError(response)
+        }
+    })
 }
 
 const editIntegration = data => {
@@ -79,8 +112,11 @@ const editIntegration = data => {
     const {settings: {url, login}} = data;
     $('#qualys_url').val(url)
     $('#qualys_login').val(login)
+    const pass = $('#qualys_password')
+    pass.prop('readonly', true).attr('placeholder', 'Click to change')
+    pass.on('click', () => pass.prop('readonly', false))
     $('#qualys_integration').modal('show')
-    $('#qualys_submit').on('click', qualysUpdate)
+    $('#qualys_submit').on('click', qualysUpdate.bind(null, data))
 }
 
 
