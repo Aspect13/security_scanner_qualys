@@ -28,12 +28,14 @@ const qualysCreate = () => {
     const url = $('#qualys_url').val()
     const login = $('#qualys_login').val()
     const password = $('#qualys_password').val()
+    const description = $('#qualys_description').val()
+    const is_default = $('#qualys_default').prop('checked')
     const project_id = getSelectedProjectId()
     preFetch()
     fetch(apiPath, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({url, login, password, project_id})
+        body: JSON.stringify({url, login, password, project_id, description, is_default})
     }).then(response => {
         console.log(response)
         postFetch()
@@ -88,6 +90,8 @@ const clearErrors = () => {
 const clearForm = () => {
     $('#qualys_url').val('')
     $('#qualys_login').val('')
+    $('#qualys_description').val('Qualys default')
+    $('#qualys_default').prop('checked', false)
     $('#qualys_password').val('').prop('readonly', false).attr('placeholder', 'Password')
     $('#qualys_test_connection').removeClass('updating')
     $('#qualys_submit').removeClass('updating')
@@ -98,12 +102,14 @@ const qualysUpdate = (cardData) => {
     console.log('UPDATE', cardData)
     const url = $('#qualys_url').val()
     const login = $('#qualys_login').val()
-    const password = $('#qualys_password').prop('readonly') ? null :$('#qualys_password').val()
+    const password = $('#qualys_password').prop('readonly') ? null : $('#qualys_password').val()
+    const description = $('#qualys_description').val()
+    const is_default = $('#qualys_default').prop('checked')
     preFetch()
     fetch(apiPath + cardData.id, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({url, login, password, is_default: true})
+        body: JSON.stringify({url, login, password, is_default, description})
     }).then(response => {
         console.log(response)
         postFetch()
@@ -120,14 +126,32 @@ const qualysUpdate = (cardData) => {
 
 const editIntegration = data => {
     console.log('editIntegration', data)
-    const {settings: {url, login}} = data;
+    const {settings: {url, login}, description, is_default} = data;
     $('#qualys_url').val(url)
     $('#qualys_login').val(login)
     const pass = $('#qualys_password')
     pass.prop('readonly', true).attr('placeholder', 'Click to change')
     pass.on('click', () => pass.prop('readonly', false))
-    $('#qualys_integration').modal('show')
+    $('#qualys_description').val(description)
+    $('#qualys_default').prop('checked', is_default)
+
     $('#qualys_submit').on('click', qualysUpdate.bind(null, data))
+    $('#qualys_integration').modal('show')
+}
+
+const deleteIntegration = id => {
+    console.log('deleteIntegration', id)
+    fetch(apiPath + id, {
+        method: 'DELETE',
+    }).then(response => {
+        console.log(response)
+        postFetch()
+        if (response.ok) {
+            location.reload()
+        } else {
+            handleError(response)
+        }
+    })
 }
 
 
@@ -141,9 +165,9 @@ $(document).ready(function () {
     //     $('#qualys_submit').addClass('disabled')
     // })
     $('#qualys_integration').on('hidden.bs.modal', e => {
-      clearErrors();
-      clearForm();
-      $('#qualys_submit').prop("onclick", null).off("click");
-      console.log('clearing click')
+        clearErrors();
+        clearForm();
+        $('#qualys_submit').prop("onclick", null).off("click");
+        console.log('clearing click')
     })
 });
