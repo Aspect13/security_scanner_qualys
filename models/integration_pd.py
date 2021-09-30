@@ -1,14 +1,14 @@
 import requests
-from pydantic import BaseModel, AnyUrl, SecretStr
+from pydantic import BaseModel, AnyUrl
 
 
 class IntegrationModel(BaseModel):
     url: AnyUrl
     login: str
     password: str
-    # password: SecretStr
 
-    def check_connection(self):
+    def check_connection(self) -> bool:
+        print('checking', self.url, requests.get(self.url))
         try:
             response = requests.get(self.url)
             return response.ok
