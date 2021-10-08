@@ -15,11 +15,17 @@
                 </label>
             </div>
         </div>
-        <div class="row pl-0">
-            <div class="collapse col-12 mb-3" id="selector_qualys">
+        <div class="row">
+            <div class="collapse col-12 mb-3 pl-0" id="selector_qualys">
                 <select class="selectpicker" data-style="btn-secondary">
                     {% for i in config['project_integrations'] %}
-                        <option value="{{ i.id }}" {% if i.is_default %} selected data-is_default="true"{% endif %} title="{{ i.description }}">{{ i.id, i.name, i.section, i.is_default }}</option>
+                        <option
+                                value="{{ i.id }}"
+                                {% if i.is_default %} selected data-is_default="true"{% endif %}
+                                title="{{ i.description }} {% if i.is_default %} - default {% endif %}"
+                        >
+                            {{ i.id }} - {{ i.description }} {% if i.is_default %} -default {% endif %}
+                        </option>
                     {% endfor %}
                 </select>
 
