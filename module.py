@@ -68,6 +68,16 @@ class Module(module.ModuleModel):
         # self.context.rpc_manager.register_function(get_scanner_parameters, name='qualys')
 
         try:
+            self.context.rpc_manager.timeout(5).integrations_register_section(
+                name=SECTION_NAME,
+                integration_description='Manage integrations with scanners',
+                test_planner_description='Specify scanners to use. You may also set scanners in <a '
+                                         'href="/?chapter=Configuration&module=Integrations&page=all">Integrations</a> '
+            )
+        except Empty:
+            ...
+
+        try:
             self.context.rpc_manager.timeout(5).integrations_register(
                 name='qualys',
                 section=SECTION_NAME,
