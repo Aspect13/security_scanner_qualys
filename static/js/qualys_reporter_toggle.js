@@ -7,6 +7,7 @@ window['scanners_qualys'] = {
         }
     },
     set_data: data => {
+        console.log('settings data for qualys', data)
         $('#integration_checkbox_qualys').prop('checked', true)
         $('#selector_qualys .selectpicker').val(data.id).selectpicker('refresh')
         $('#selector_qualys').collapse('show')
