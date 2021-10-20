@@ -2,7 +2,7 @@
     <div class="card card-row-1">
         <div class="card-header">
             <div class="d-flex">
-                <h9 class="flex-grow-1">Qualys</h9>
+                <h9 class="flex-grow-1" style="line-height: 24px">Qualys</h9>
 
                 <button type="button" class="btn btn-24 btn-action" data-toggle="collapse"
                         data-target="#settings_qualys" aria-expanded="false"><i class="fas fa-cog"></i>
@@ -31,9 +31,53 @@
 
             </div>
         </div>
+        <div class="row">
+            <div class="collapse col-12 mb-3 p-0" id="settings_qualys">
+                <div class="col-12 pl-0">
+                    <h13>Advanced Settings</h13>
+                </div>
+                <div class="form-group col-12 mt-2 p-0">
+                    <h9>Option Profile ID</h9>
+                    <input type="text" id="qualys_option_profile" class="form-control form-control-alternative"
+                           placeholder="Key">
+                </div>
+                <div class="form-group col-12 p-0">
+                    <h9>Report Template ID</h9>
+                    <input type="text" id="qualys_report_template" class="form-control form-control-alternative"
+                           placeholder="Key">
+                </div>
+                <div class="form-check col-12 p-0">
+
+                    <h9>Scanner type</h9>
+                    <div class="form-group form-check mb-0">
+                        <input type="checkbox" class="form-check-input" id="qualys_scanner_type_internal">
+                        <h13 class="form-check-label" for="qualys_scanner_type_internal">Internal</h13>
+                    </div>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="qualys_scanner_type_external">
+                    <h13 class="form-check-label" for="qualys_scanner_type_external">External</h13>
+                </div>
+                <div class="form-group col-12 p-0" id="qualys_scanner_pool">
+                    <div class="row d-flex">
+                        <div class="flex-grow-1">
+                            <h9>Qualys scanner pool</h9>
+                            <p>
+                                <h13>Description</h13>
+                            </p>
+                        </div>
+                        <button class="btn btn-primary btn-37" id="qualys_scanner_pool_plus"><span class="fa fa-plus"></span></button>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
 
     </div>
-
 </div>
+
 
 <script src="{{ url_for('qualys.static', filename='js/qualys_reporter_toggle.js') }}" type="text/javascript"></script>
