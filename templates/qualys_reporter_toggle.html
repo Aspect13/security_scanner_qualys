@@ -46,19 +46,19 @@
                     <input type="text" id="qualys_report_template" class="form-control form-control-alternative"
                            placeholder="Key">
                 </div>
-                <div class="form-check col-12 p-0">
+                <div class="form-group col-12 p-0" id="qualys_scanner_type">
 
                     <h9>Scanner type</h9>
-                    <div class="form-group form-check mb-0">
-                        <input type="checkbox" class="form-check-input" id="qualys_scanner_type_internal">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" value="external" id="qualys_scanner_type_external" name="qualys_scanner_type">
+                        <h13 class="form-check-label" for="qualys_scanner_type_external">External</h13>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" value="internal" id="qualys_scanner_type_internal" name="qualys_scanner_type">
                         <h13 class="form-check-label" for="qualys_scanner_type_internal">Internal</h13>
                     </div>
                 </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="qualys_scanner_type_external">
-                    <h13 class="form-check-label" for="qualys_scanner_type_external">External</h13>
-                </div>
-                <div class="form-group col-12 p-0" id="qualys_scanner_pool">
+                <div class="form-group col-12 p-0 collapse" id="qualys_scanner_pool">
                     <div class="row d-flex">
                         <div class="flex-grow-1">
                             <h9>Qualys scanner pool</h9>
@@ -66,7 +66,8 @@
                                 <h13>Description</h13>
                             </p>
                         </div>
-                        <button class="btn btn-primary btn-37" id="qualys_scanner_pool_plus"><span class="fa fa-plus"></span></button>
+                        <button class="btn btn-primary btn-37" id="qualys_scanner_pool_plus"><span
+                                class="fa fa-plus"></span></button>
                     </div>
 
 
