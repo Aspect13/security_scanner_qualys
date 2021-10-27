@@ -16,6 +16,8 @@
 #   limitations under the License.
 
 """ Module """
+import functools
+
 from pathlib import Path
 from queue import Empty
 
@@ -66,6 +68,12 @@ class Module(module.ModuleModel):
 
         # from .rpc_worker import get_scanner_parameters
         # self.context.rpc_manager.register_function(get_scanner_parameters, name='qualys')
+
+        from .rpc_worker import make_dusty_config
+        self.context.rpc_manager.register_function(
+            functools.partial(make_dusty_config, self.context),
+            name='qualys',
+        )
 
         try:
             self.context.rpc_manager.timeout(5).integrations_register_section(

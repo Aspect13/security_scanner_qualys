@@ -27,7 +27,7 @@ const handleError = response => response.json().then(
 const qualysCreate = () => {
     const url = $('#qualys_url').val()
     const login = $('#qualys_login').val()
-    const password = $('#qualys_password').val()
+    const passwd = $('#qualys_password').val()
     const description = $('#qualys_description').val()
     const is_default = $('#qualys_default').prop('checked')
     const project_id = getSelectedProjectId()
@@ -35,7 +35,7 @@ const qualysCreate = () => {
     fetch(apiPath, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({url, login, password, project_id, description, is_default})
+        body: JSON.stringify({url, login, passwd, project_id, description, is_default})
     }).then(response => {
         console.log(response)
         postFetch()
@@ -53,13 +53,13 @@ const qualysCreate = () => {
 const qualysTestConnection = () => {
     const url = $('#qualys_url').val()
     const login = $('#qualys_login').val()
-    const password = $('#qualys_password').val()
+    const passwd = $('#qualys_password').val()
     preFetch()
     $('#qualys_test_connection').removeClass('btn-success').addClass('btn-secondary')
     fetch(apiPath + 'check_settings', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({url, login, password})
+        body: JSON.stringify({url, login, passwd})
     }).then(response => {
         console.log(response)
         postFetch()
@@ -102,14 +102,14 @@ const qualysUpdate = (cardData) => {
     console.log('UPDATE', cardData)
     const url = $('#qualys_url').val()
     const login = $('#qualys_login').val()
-    const password = $('#qualys_password').prop('readonly') ? null : $('#qualys_password').val()
+    const passwd = $('#qualys_password').prop('readonly') ? null : $('#qualys_password').val()
     const description = $('#qualys_description').val()
     const is_default = $('#qualys_default').prop('checked')
     preFetch()
     fetch(apiPath + cardData.id, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({url, login, password, is_default, description})
+        body: JSON.stringify({url, login, passwd, is_default, description})
     }).then(response => {
         console.log(response)
         postFetch()
