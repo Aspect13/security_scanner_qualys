@@ -23,12 +23,11 @@ from queue import Empty
 
 import flask  # pylint: disable=E0401
 import jinja2  # pylint: disable=E0401
-from flask import request, render_template, redirect, url_for
 from pylon.core.tools import log  # pylint: disable=E0611,E0401
 from pylon.core.tools import module  # pylint: disable=E0611,E0401
 
-from .components.render_qualys import render_qualys_integration_create_modal, \
-    render_qualys_integration_card, render_qualys_reporter_toggle
+from .components import render_integration_create_modal, \
+    render_integration_card, render_reporter_toggle
 from .models.integration_pd import IntegrationModel
 
 
@@ -42,6 +41,7 @@ class Module(module.ModuleModel):
 
     def init(self):
         """ Init module """
+        NAME = 'qualys'
         SECTION_NAME = 'scanners'
         # scanner = {
         #     'name': '',
@@ -52,9 +52,9 @@ class Module(module.ModuleModel):
 
         log.info("Initializing module security_scanner_qualys")
         bp = flask.Blueprint(
-            "qualys", "plugins.security_scanner_qualys.plugin",
+            NAME, "plugins.security_scanner_qualys.plugin",
             static_folder=str(Path(__file__).parents[0] / "static"),
-            static_url_path='/qualys/static/'
+            static_url_path=f'/{NAME}/static/'
         )
         bp.jinja_loader = jinja2.ChoiceLoader([
             jinja2.loaders.PackageLoader("plugins.security_scanner_qualys", "templates"),
@@ -63,8 +63,8 @@ class Module(module.ModuleModel):
         self.context.app.register_blueprint(bp)
         # Register template slot callback
         # self.context.slot_manager.register_callback("security_scanners", render_qualys_card)
-        self.context.slot_manager.register_callback("integration_card_qualys", render_qualys_integration_card)
-        self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_qualys_reporter_toggle)
+        self.context.slot_manager.register_callback(f"integration_card_{NAME}", render_integration_card)
+        self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_reporter_toggle)
 
         # from .rpc_worker import get_scanner_parameters
         # self.context.rpc_manager.register_function(get_scanner_parameters, name='qualys')
@@ -72,39 +72,22 @@ class Module(module.ModuleModel):
         from .rpc_worker import make_dusty_config
         self.context.rpc_manager.register_function(
             functools.partial(make_dusty_config, self.context),
-            name='qualys',
+            name=NAME,
         )
 
-        try:
-            self.context.rpc_manager.timeout(5).integrations_register_section(
-                name=SECTION_NAME,
-                integration_description='Manage integrations with scanners',
-                test_planner_description='Specify scanners to use. You may also set scanners in <a '
-                                         'href="/?chapter=Configuration&module=Integrations&page=all">Integrations</a> '
-            )
-        except Empty:
-            ...
+        self.context.rpc_manager.call.integrations_register_section(
+            name=SECTION_NAME,
+            integration_description='Manage integrations with scanners',
+            test_planner_description='Specify scanners to use. You may also set scanners in <a '
+                                     'href="/?chapter=Configuration&module=Integrations&page=all">Integrations</a> '
+        )
 
-        try:
-            self.context.rpc_manager.timeout(5).integrations_register(
-                name='qualys',
-                section=SECTION_NAME,
-                settings_model=IntegrationModel,
-                integration_callback=render_qualys_integration_create_modal
-            )
-        except Empty:
-            ...
-
-        # SECTION_NAME = 'reporters_test'
-        # # TMP
-        # self.context.rpc_manager.timeout(5).integrations_register(
-        #     name='qualys_2',
-        #     section=SECTION_NAME,
-        #     settings_model=IntegrationModel,
-        #     integration_callback=render_qualys_integration_create_modal
-        # )
-        # self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_qualys_reporter_toggle)
-
+        self.context.rpc_manager.call.integrations_register(
+            name=NAME,
+            section=SECTION_NAME,
+            settings_model=IntegrationModel,
+            integration_callback=render_integration_create_modal
+        )
 
     def deinit(self):  # pylint: disable=R0201
         """ De-init module """

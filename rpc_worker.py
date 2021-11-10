@@ -1,13 +1,4 @@
-# import json
-# from pathlib import Path
-
 from pylon.core.tools import log  # pylint: disable=E0611,E0401
-
-
-# def get_scanner_parameters():
-#     with open(Path(__file__).parents[0] / "metadata.json") as scanner_data:
-#         data = json.load(scanner_data)
-#     return data.get('scanner_params')
 
 
 def make_dusty_config(context, test_params, scanner_params):
