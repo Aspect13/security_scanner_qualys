@@ -19,7 +19,7 @@ def render_integration_card(context, slot, payload):
 
 def render_reporter_toggle(context, slot, payload):
     try:
-        integrations = context.call.integrations_get_project_integrations_by_name(
+        integrations = context.rpc_manager.call.integrations_get_project_integrations_by_name(
             payload['id'],
             'qualys'
         )
