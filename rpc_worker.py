@@ -7,24 +7,21 @@ def make_dusty_config(context, test_params, scanner_params):
     log.info("Test params: %s", test_params)
     log.info("Scanner params: %s", scanner_params)
     #
-    project_id = context.rpc_manager.call.get_project_id()
-    log.info("Project ID: %s", project_id)
+    integration = context.rpc_manager.call.integrations_get_by_id(scanner_params['id'])
     #
-    integrations = \
-        context.rpc_manager.call.integrations_get_project_integrations_by_name(
-            project_id, "qualys"
-        )
+    log.info("Integrations: %s", integration)
     #
-    log.info("Integrations: %s", integrations)
-    #
+    qualys_scanner_type = scanner_params.get("scanner_type")
+    if qualys_scanner_type:
+        qualys_scanner_type = qualys_scanner_type.upper()
     result = {
         "target": test_params["urls_to_scan"][0],
-        "qualys_api_server": str(integrations[0].settings["url"]),
-        "qualys_login": integrations[0].settings["login"],
-        "qualys_password": integrations[0].settings["passwd"],
-        "qualys_option_profile_id": scanner_params["option_profile_id"],
-        "qualys_report_template_id": scanner_params["report_template_id"],
-        "qualys_scanner_type": scanner_params["scanner_type"].upper(),
+        "qualys_api_server": str(integration.settings["url"]),
+        "qualys_login": integration.settings["login"],
+        "qualys_password": integration.settings["passwd"],
+        "qualys_option_profile_id": scanner_params.get("option_profile_id"),
+        "qualys_report_template_id": scanner_params.get("report_template_id"),
+        "qualys_scanner_type": qualys_scanner_type,
     }
     #
     log.info("Result: %s", result)

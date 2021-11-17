@@ -72,7 +72,7 @@ class Module(module.ModuleModel):
         from .rpc_worker import make_dusty_config
         self.context.rpc_manager.register_function(
             functools.partial(make_dusty_config, self.context),
-            name=NAME,
+            name=f'dusty_config_{NAME}',
         )
 
         self.context.rpc_manager.call.integrations_register_section(
