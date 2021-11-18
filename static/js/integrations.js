@@ -111,7 +111,7 @@ const qualysApp = Vue.createApp({
                     if (response.ok) {
                         this.modal.modal('hide')
                         alertMain.add('Qualys integration created!', 'success-overlay')
-                        setTimeout(() => location.reload(), 2000)
+                        setTimeout(() => location.reload(), 1500)
                     } else {
                         this.handleError(response)
                     }
@@ -146,7 +146,7 @@ const qualysApp = Vue.createApp({
                     if (response.ok) {
                         this.modal.modal('hide')
                         alertMain.add('Qualys integration updated!', 'success-overlay')
-                        setTimeout(() => location.reload(), 2000)
+                        setTimeout(() => location.reload(), 1500)
                     } else {
                         this.handleError(response)
                     }
@@ -162,7 +162,7 @@ const qualysApp = Vue.createApp({
                     this.is_fetching = false
                     if (response.ok) {
                         alertMain.add('Qualys integration deleted')
-                        setTimeout(() => location.reload(), 2000)
+                        setTimeout(() => location.reload(), 1000)
                     } else {
                         this.handleError(response)
                         alertMain.add(`Deletion error. <button class="btn btn-primary" @click="modal.modal('show')">Open modal<button>`)
