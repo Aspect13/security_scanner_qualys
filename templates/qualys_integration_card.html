@@ -7,10 +7,10 @@
             <h13>id: {{ config['id'] }} {% if config['is_default'] %} default {% endif %}</h13>
         </div>
         <div class="row text-uppercase font-weight-bold">
-            {{ config['name'] }}
+            Qualys
         </div>
         <div class="row">
-            <h13 class="qualys_description">{{ config['description'] }}</h13>
+            <h13 class="integration_description">{{ config['description'] }}</h13>
         </div>
     </div>
     <div class="col">
@@ -20,9 +20,9 @@
                 <i class="fas fa-ellipsis-h"></i>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#" onclick="editIntegration({{ config.json() }})"><i
+                <a class="dropdown-item" href="#" onclick="Qualys.edit({{ config.json() }})"><i
                         class="fas fa-cog fa-secondary fa-xs"></i> Edit</a>
-                <a class="dropdown-item" href="#" onclick="deleteIntegration({{ config['id'] }})"><i
+                <a class="dropdown-item" href="#" onclick="Qualys.delete({{ config['id'] }})"><i
                         class="fas fa-trash-alt fa-secondary fa-xs"></i> Delete</a>
             </div>
         </div>
