@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="{{ url_for('qualys.static', filename='css/integration_card.css') }}"/>
 
 {% set name = "qualys" %}
+
 <button type="button"
         class="btn-action btn-lg btn-secondary card card-row-1 mr-3 ml-3 flex-row align-items-center p-2"
         data-toggle="modal"
@@ -11,7 +12,8 @@
     <div class="col-3"><img style="height: 24px" src="{{ url_for('qualys.static', filename='logo.svg') }}"></img></div>
     <div class="col">Qualys</div>
 </button>
-<div class="modal fixed-left fade shadow-sm" tabindex="-1" role="dialog" id="{{ name }}_integration">
+
+<div class="modal modal-small fixed-left fade shadow-sm" tabindex="-1" role="dialog" id="{{ name }}_integration">
     <div class="modal-dialog modal-dialog-aside" role="document">
         <div class="modal-content">
             <div class="modal-header">
