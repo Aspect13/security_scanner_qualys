@@ -1,13 +1,6 @@
 {
   "name": "Carrier Security Qualys Plugin",
   "version": "0.1",
-  "module": "plugins.security_scanner_qualys",
-  "extract": true,
   "depends_on": ["shared", "projects", "theme"],
-  "init_after": ["theme", "integrations"],
-  "scanner_params": {
-    "target": "urls_to_scan",
-    "scan_types": "all",
-    "exclude": "urls_exclusions"
-  }
+  "init_after": ["theme", "integrations"]
 }

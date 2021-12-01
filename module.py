@@ -34,10 +34,9 @@ from .models.integration_pd import IntegrationModel
 class Module(module.ModuleModel):
     """ Galloper module """
 
-    def __init__(self, settings, root_path, context):
-        self.settings = settings
-        self.root_path = root_path
+    def __init__(self, context, descriptor):
         self.context = context
+        self.descriptor = descriptor
 
     def init(self):
         """ Init module """
