@@ -40,38 +40,20 @@ class Module(module.ModuleModel):
 
     def init(self):
         """ Init module """
-        NAME = 'qualys'
         SECTION_NAME = 'scanners'
-        # scanner = {
-        #     'name': '',
-        #     'description': ''
-        # }
 
-        # self.context.rpc_manager.register_function(register_scection_integration, name='qualys')
+        log.info(f'Initializing module {self.descriptor.name}')
 
-        log.info("Initializing module security_scanner_qualys")
-        bp = flask.Blueprint(
-            NAME, "plugins.security_scanner_qualys.plugin",
-            static_folder=str(Path(__file__).parents[0] / "static"),
-            static_url_path=f'/{NAME}/static/'
-        )
-        bp.jinja_loader = jinja2.ChoiceLoader([
-            jinja2.loaders.PackageLoader("plugins.security_scanner_qualys", "templates"),
-        ])
-        # Register in app
-        self.context.app.register_blueprint(bp)
+        self.descriptor.init_blueprint()
+
         # Register template slot callback
-        # self.context.slot_manager.register_callback("security_scanners", render_qualys_card)
-        self.context.slot_manager.register_callback(f"integration_card_{NAME}", render_integration_card)
+        self.context.slot_manager.register_callback(f"integration_card_{self.descriptor.name}", render_integration_card)
         self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_reporter_toggle)
-
-        # from .rpc_worker import get_scanner_parameters
-        # self.context.rpc_manager.register_function(get_scanner_parameters, name='qualys')
 
         from .rpc_worker import make_dusty_config
         self.context.rpc_manager.register_function(
             functools.partial(make_dusty_config, self.context),
-            name=f'dusty_config_{NAME}',
+            name=f'dusty_config_{self.descriptor.name}',
         )
 
         self.context.rpc_manager.call.integrations_register_section(
@@ -82,7 +64,7 @@ class Module(module.ModuleModel):
         )
 
         self.context.rpc_manager.call.integrations_register(
-            name=NAME,
+            name=self.descriptor.name,
             section=SECTION_NAME,
             settings_model=IntegrationModel,
             integration_callback=render_integration_create_modal
