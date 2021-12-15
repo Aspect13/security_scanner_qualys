@@ -27,7 +27,7 @@ from pylon.core.tools import log  # pylint: disable=E0611,E0401
 from pylon.core.tools import module  # pylint: disable=E0611,E0401
 
 from .components import render_integration_create_modal, \
-    render_integration_card, render_reporter_toggle
+    render_integration_card, render_test_toggle
 from .models.integration_pd import IntegrationModel
 
 
@@ -48,7 +48,7 @@ class Module(module.ModuleModel):
 
         # Register template slot callback
         self.context.slot_manager.register_callback(f"integration_card_{self.descriptor.name}", render_integration_card)
-        self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_reporter_toggle)
+        self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_test_toggle)
 
         from .rpc_worker import make_dusty_config
         self.context.rpc_manager.register_function(

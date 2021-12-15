@@ -12,7 +12,7 @@ const Qualys = {
     initialState: () => ({
         url: '',
         login: '',
-        password: '',
+        passwd: '',
 
         description: '',
         is_default: false,
@@ -49,7 +49,7 @@ const qualysApp = Vue.createApp({
                 return getSelectedProjectId()
             },
             body_data() {
-                const {url, login, password: passwd, description, is_default, project_id} = this
+                const {url, login, passwd, description, is_default, project_id} = this
                 return {url, login, passwd, description, is_default, project_id}
             },
             test_connection_class() {

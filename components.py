@@ -17,7 +17,7 @@ def render_integration_card(context, slot, payload):
     )
 
 
-def render_reporter_toggle(context, slot, payload):
+def render_test_toggle(context, slot, payload):
     try:
         integrations = context.rpc_manager.call.integrations_get_project_integrations_by_name(
             payload['id'],
@@ -27,6 +27,6 @@ def render_reporter_toggle(context, slot, payload):
         integrations = []
     payload['project_integrations'] = integrations
     return render_template(
-        'security_scanner_qualys:qualys_reporter_toggle.html',
+        'security_scanner_qualys:qualys_test_toggle.html',
         config=payload
     )

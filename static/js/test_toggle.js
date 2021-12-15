@@ -1,4 +1,4 @@
-window['scanners_qualys'] = {
+window['scanners_security_scanner_qualys'] = {
     get_data: () => {
         if ($('#integration_checkbox_qualys').prop('checked')) {
             const id = $('#selector_qualys .selectpicker').val()
