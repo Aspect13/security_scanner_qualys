@@ -12,7 +12,7 @@ const Qualys = {
     initialState: () => ({
         url: '',
         login: '',
-        password: '',
+        passwd: '',
 
         description: '',
         is_default: false,
@@ -21,8 +21,8 @@ const Qualys = {
         test_connection_status: 0,
         id: null,
 
-        pluginName: 'qualys',
-        modal: $('#qualys_integration'),
+        pluginName: 'security_scanner_qualys',
+        modal: $('#security_scanner_qualys_integration'),
     })
 }
 
@@ -49,7 +49,7 @@ const qualysApp = Vue.createApp({
                 return getSelectedProjectId()
             },
             body_data() {
-                const {url, login, password: passwd, description, is_default, project_id} = this
+                const {url, login, passwd, description, is_default, project_id} = this
                 return {url, login, passwd, description, is_default, project_id}
             },
             test_connection_class() {
@@ -73,7 +73,7 @@ const qualysApp = Vue.createApp({
             test_connection() {
                 console.log('TEST CONN', this.$data)
                 this.is_fetching = true
-                $('#qualys_test_connection').removeClass('btn-success').addClass('btn-secondary')
+                $('#security_scanner_qualys_test_connection').removeClass('btn-success').addClass('btn-secondary')
                 fetch(this.apiPath + 'check_settings', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -110,8 +110,7 @@ const qualysApp = Vue.createApp({
                     this.is_fetching = false
                     if (response.ok) {
                         this.modal.modal('hide')
-                        alertMain.add('Qualys integration created!', 'success-overlay')
-                        setTimeout(() => location.reload(), 1500)
+                        location.reload()
                     } else {
                         this.handleError(response)
                     }
@@ -145,8 +144,7 @@ const qualysApp = Vue.createApp({
                     this.is_fetching = false
                     if (response.ok) {
                         this.modal.modal('hide')
-                        alertMain.add('Qualys integration updated!', 'success-overlay')
-                        setTimeout(() => location.reload(), 1500)
+                        location.reload()
                     } else {
                         this.handleError(response)
                     }
@@ -161,8 +159,7 @@ const qualysApp = Vue.createApp({
                     console.log(response)
                     this.is_fetching = false
                     if (response.ok) {
-                        alertMain.add('Qualys integration deleted')
-                        setTimeout(() => location.reload(), 1000)
+                        location.reload()
                     } else {
                         this.handleError(response)
                         alertMain.add(`Deletion error. <button class="btn btn-primary" @click="modal.modal('show')">Open modal<button>`)
@@ -175,4 +172,4 @@ const qualysApp = Vue.createApp({
 
 qualysApp.config.compilerOptions.isCustomElement = tag => ['h9', 'h13'].includes(tag)
 
-qualysVm = qualysApp.mount('#qualys_integration')
+qualysVm = qualysApp.mount('#security_scanner_qualys_integration')
