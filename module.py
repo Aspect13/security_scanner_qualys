@@ -43,6 +43,7 @@ class Module(module.ModuleModel):
         SECTION_NAME = 'scanners'
 
         log.info(f'Initializing module {self.descriptor.name}')
+        return
 
         self.descriptor.init_blueprint()
 
